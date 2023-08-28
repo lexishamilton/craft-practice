@@ -1,0 +1,29 @@
+dateModified: 1692994769
+email:
+  fromEmail: lexis.hamilton@datadrivendesign.net
+  fromName: 'Craft Development Ddev'
+  transportType: craft\mail\transportadapters\Sendmail
+meta:
+  __names__:
+    b6e46e8c-4c1c-42c4-8e90-7db3af97fc3b: 'Craft Development Ddev' # Craft Development Ddev
+    b68853dd-00c6-4fad-a140-185574de2021: Common # Common
+    fc3cd8ff-cbe8-4dae-b5b0-4c1f75de2bfb: 'Craft Development Ddev' # Craft Development Ddev
+plugins:
+  _clear-jobs:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.0
+    settings:
+      clearApiUrl: 'https://app.clearcompany.com/api/v2/jobs/ascendelements/json'
+system:
+  edition: solo
+  live: true
+  name: 'Craft Development Ddev'
+  schemaVersion: 4.5.0.3
+  timeZone: America/Los_Angeles
+users:
+  allowPublicRegistration: false
+  defaultGroup: null
+  photoSubpath: null
+  photoVolumeUid: null
+  requireEmailVerification: true

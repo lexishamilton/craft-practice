@@ -1,0 +1,12 @@
+{# @var plugin \lexishamilton\craftclearjobs\Plugin #}
+{# @var settings \lexishamilton\craftclearjobs\models\Settings #}
+
+{% import '_includes/forms.twig' as forms %}
+
+{{ forms.urlField({
+    label: "API Url"|t('clear'),
+    instructions: "Enter the Clear API url"|t('clear'),
+    name: 'clearApiUrl',
+    value: settings.clearApiUrl,
+    required: true
+}) }}

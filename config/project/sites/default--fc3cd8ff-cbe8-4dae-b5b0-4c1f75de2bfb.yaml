@@ -1,0 +1,8 @@
+baseUrl: $PRIMARY_SITE_URL
+handle: default
+hasUrls: true
+language: en-US
+name: 'Craft Development Ddev'
+primary: true
+siteGroup: b6e46e8c-4c1c-42c4-8e90-7db3af97fc3b # Craft Development Ddev
+sortOrder: 1
