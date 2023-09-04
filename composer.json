@@ -4,6 +4,7 @@
     "require": {
         "craftcms/cms": "^4.4.0",
         "lexis-hamilton/craft-clear-jobs": "dev-main",
+        "lexis-hamilton/craft-librivox": "dev-main",
         "vlucas/phpdotenv": "^5.4.0"
     },
     "require-dev": {
@@ -31,8 +32,14 @@
             "@php -r \"file_exists('.env') || copy('.env.example.dev', '.env');\""
         ]
     },
-    "repositories": [{
+    "repositories": [
+        {
             "type": "path",
             "url": "plugins/clear-jobs"
-        }]
+        },
+        {
+            "type": "path",
+            "url": "plugins/librivox"
+        }
+    ]
 }

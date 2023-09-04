@@ -1,4 +1,4 @@
-dateModified: 1692994769
+dateModified: 1693859685
 email:
   fromEmail: lexis.hamilton@datadrivendesign.net
   fromName: 'Craft Development Ddev'
@@ -15,11 +15,15 @@ plugins:
     schemaVersion: 1.0.0
     settings:
       clearApiUrl: 'https://app.clearcompany.com/api/v2/jobs/ascendelements/json'
+  _librivox:
+    edition: standard
+    enabled: true
+    schemaVersion: 1.0.0
 system:
   edition: solo
   live: true
   name: 'Craft Development Ddev'
-  schemaVersion: 4.5.0.3
+  schemaVersion: 4.5.3.0
   timeZone: America/Los_Angeles
 users:
   allowPublicRegistration: false

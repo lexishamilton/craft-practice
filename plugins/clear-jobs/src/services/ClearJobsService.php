@@ -37,7 +37,7 @@ class ClearJobsService extends Component
             return $responseBody;
         } else {
 
-            // @TODO: if empty, we wouldn't want to cache it.sgit commit -m
+            // @TODO: if empty, we wouldn't want to cache it.
             return [];
         }
     }
