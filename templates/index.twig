@@ -13,7 +13,8 @@
             <div class="content">
                 <h1>Librivox Books API</h1>
                 {% for book in craft.librivox.getLibrivoxBooks() %}
-                    {{ dump(book) }}
+                    <p>{{ book.title }} was saved to the database</p>
+{#                    {{ dump(book) }}#}
                 {% endfor %}
 
                 <h1>Jobs from the Clear Jobs Plugin</h1>
