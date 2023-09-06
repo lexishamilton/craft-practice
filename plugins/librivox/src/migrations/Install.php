@@ -5,6 +5,7 @@ namespace lexishamilton\craftlibrivox\migrations;
 use Craft;
 use craft\db\Migration;
 use lexishamilton\craftlibrivox\records\BookRecord;
+use lexishamilton\craftlibrivox\records\AuthorRecord;
 
 class Install extends Migration
 {
@@ -33,6 +34,23 @@ class Install extends Migration
             ]);
         }
 
+        //Create Author Table
+        $authorTable = AuthorRecord::tableName();
+
+        if(!$this->db->tableExists($authorTable)) {
+            $this->createTable($authorTable, [
+                'authorId' => $this->primaryKey(),
+                'uid' => $this->uid(),
+                'dateCreated' => $this->dateTime()->notNull(),
+                'dateUpdated' => $this->dateTime()->notNull(),
+                'firstName' => $this->string(),
+                'lastName' => $this->string(),
+                'dob' => $this->string(),
+                'dod' => $this->string(),
+
+            ]);
+        }
+
         // Refresh the db schema caches
         Craft::$app->db->schema->refresh();
 
@@ -46,6 +64,7 @@ class Install extends Migration
     public function safeDown(): bool
     {
         $this->dropTableIfExists(BookRecord::tableName());
+        $this->dropTableIfExists(AuthorRecord::tableName());
 
         return true;
     }

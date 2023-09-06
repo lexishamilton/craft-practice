@@ -14,4 +14,8 @@ class BookRecord extends ActiveRecord
     public static function tableName(): string {
          return '{{%lexishamilton_librivox_book}}';
     }
+
+    public function getAuthors() {
+        return $this->hasMany(AuthorRecord::class, ['authorId' => 'authorId']);
+    }
 }

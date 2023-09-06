@@ -5,6 +5,7 @@ namespace lexishamilton\craftlibrivox\services;
 use craft\base\Component;
 use craft\helpers\DateTimeHelper;
 use lexishamilton\craftlibrivox\records\BookRecord;
+use lexishamilton\craftlibrivox\records\AuthorRecord;
 use GuzzleHttp;
 
 class LibrivoxService extends Component {
@@ -51,31 +52,54 @@ class LibrivoxService extends Component {
 
     public function saveBook($book) {
 
-//        foreach($book as $k => $v) {
-//            $kv = [$k, $v];
-//            print_r($kv);
-//        }
+        // Check if the Book has already been loaded
+        $bookRecord = BookRecord::find()
+            ->where(['bookId' => (string) $book['id']])
+            ->one();
 
-//        $copyrightYear = $book["copyright_year"];
-//        $copyrightYear = (int) $copyrightYear;
+        // If not in the db, save it
+        if (!$bookRecord) {
+            $bookRecord = new BookRecord();
+
+            //add fields and hydrate
+            $bookRecord->setAttribute('bookId', (int)$book['id']);
+            $bookRecord->setAttribute('title', (string)$book['title']);
+            $bookRecord->setAttribute('description', (string)$book['description']);
+            $bookRecord->setAttribute('language', (string)$book['language']);
+            $bookRecord->setAttribute('copyrightYear', (int)$book['copyright_year']);
+            $bookRecord->setAttribute('totalTime', (string)$book['totaltime']);
+
+            //save book authors
+            $authors = $book['authors'];
+            foreach ($authors as $author) {
+                $this->saveAuthor($author);
+            }
+
+
+            //        $bookRecord->setAttribute('title', (string) $book["title"] ); //author ids
+
+
+            //save into database
+            $bookRecord->save();
+        }
+
+    }
+
+    public function saveAuthor($author) {
+        $authorRecord = new AuthorRecord();
+
+        print_r($author['first_name'] . " " . $author['last_name']);
 //
-//        print_r(gettype($copyrightYear));
-
-
-        $bookRecord = new BookRecord();
+//        print_r($author);
 
         //add fields and hydrate
-        $bookRecord->setAttribute('bookId', (int) $book["id"] );
-        $bookRecord->setAttribute('title', (string) $book["title"] );
-        $bookRecord->setAttribute('description', (string) $book["description"] );
-        $bookRecord->setAttribute('language', (string) $book["language"] );
-        $bookRecord->setAttribute('copyrightYear', (int) $book["copyright_year"] );
-        $bookRecord->setAttribute('totalTime', (string) $book["totaltime"] );
-//        $bookRecord->setAttribute('title', (string) $book["title"] ); //author ids
+        $authorRecord->setAttribute('authorId', (int) $author['id'] );
+        $authorRecord->setAttribute('firstName', (string) $author['first_name'] );
+        $authorRecord->setAttribute('lastName', (string) $author['last_name'] );
+        $authorRecord->setAttribute('dob', (string) $author['dob'] );
+        $authorRecord->setAttribute('dod', (string) $author['dod'] );
 
-
-        //save into database
-        $bookRecord->save();
+//        $authorRecord->save();
 
     }
 }
