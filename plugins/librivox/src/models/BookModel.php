@@ -48,11 +48,6 @@ class BookModel extends Model
      */
     public $totalTime;
 
-    /**
-     * @var int Associated author id
-     */
-    public $authorId;
-
 
 
 }

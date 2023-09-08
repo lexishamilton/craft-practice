@@ -2184,7 +2184,7 @@
             "dist": {
                 "type": "path",
                 "url": "plugins/librivox",
-                "reference": "0ac6dc124715cf4c30cfacb20d302c2ac1bab2c4"
+                "reference": "f4968d1b5c02c4e4573983977bc7f5f2e7ad2d78"
             },
             "require": {
                 "craftcms/cms": "^4.5.0",
@@ -2192,7 +2192,7 @@
             },
             "type": "craft-plugin",
             "extra": {
-                "handle": "_librivox",
+                "handle": "librivox",
                 "name": "Librivox",
                 "developer": "Lexis Hamilton",
                 "documentationUrl": ""
@@ -7451,8 +7451,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "lexis-hamilton/craft-clear-jobs": 20,
-        "lexis-hamilton/craft-librivox": 20
+        "lexis-hamilton/craft-clear-jobs": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

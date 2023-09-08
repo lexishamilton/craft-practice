@@ -3,13 +3,18 @@ namespace lexishamilton\craftlibrivox;
 
 use Craft;
 use craft\base\Plugin as BasePlugin;
-use craft\web\twig\variables\CraftVariable;
-use lexishamilton\craftlibrivox\variables\LibrivoxVariable;
-use Yii\base\Event;
+use craft\events\RegisterUrlRulesEvent;
 use craft\events\PluginEvent;
 use craft\services\Plugins;
-use GuzzleHttp;
+use craft\web\twig\variables\CraftVariable;
+use craft\web\UrlManager;
+use lexishamilton\craftlibrivox\variables\LibrivoxVariable;
 use lexishamilton\craftlibrivox\services\LibrivoxService;
+use Yii\base\Event;
+
+use GuzzleHttp;
+
+
 
 /**
  * Librivox plugin
@@ -17,7 +22,15 @@ use lexishamilton\craftlibrivox\services\LibrivoxService;
  */
 class Plugin extends BasePlugin
 {
+
+    /**
+     * @var Plugin
+     */
+    public static $plugin;
+
+    public bool $hasCpSection = true;
     public string $schemaVersion = '1.0.0';
+
 
     public static function config(): array
     {
@@ -26,6 +39,17 @@ class Plugin extends BasePlugin
                 // Define component configs here...
             ],
         ];
+    }
+
+    // Register menus
+    public function getCpNavItem(): ?array
+    {
+        $item = parent::getCpNavItem();
+        $item['icon'] = '';
+        $item['subnav'] = [
+            'index' => ['label' => 'Books', 'url' => 'librivox/index']
+        ];
+        return $item;
     }
 
     public function init(): void
@@ -65,6 +89,17 @@ class Plugin extends BasePlugin
                 function(Event $event) {
                     $variable = $event->sender;
                     $variable->set('librivox', LibrivoxVariable::class);
+                }
+            );
+
+            // Register CP Routes
+            Event::on(
+                UrlManager::class,
+                UrlManager::EVENT_REGISTER_CP_URL_RULES,
+                function(RegisterUrlRulesEvent $event) {
+                    $event->rules = array_merge($event->rules, [
+                        'librivox/<bookId:\d+>' => 'librivox/book/edit'
+                    ]);
                 }
             );
 

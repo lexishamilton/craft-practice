@@ -1,0 +1,37 @@
+{% extends "_layouts/cp" %}
+
+{% set title = "Books"|t('librivox') %}
+{% set selectedTab = 'index' %}
+{% set selectedSubnavItem = 'index' %}
+{% do view.registerAssetBundle('craft\\web\\assets\\admintable\\AdminTableAsset') %}
+
+{% block content %}
+    <table id="book-table" class="data fullwidth collapsible">
+        <thead>
+        <th scope="col">{{ "Book Title"|t('Librivox') }}</th>
+        <th scope="col">{{ "Book Description"|t('Librivox') }}</th>
+        <th scope="col">{{ "Operations"|t('Librivox') }}</th>
+        </thead>
+        <tbody>
+        {% for book in craft.librivox.getLibrivoxBooks() %}
+            <tr data-id="1" data-name="bookTitle">
+                <th scope="row" data-title="title">
+                    {{ book.title }}
+                </th>
+                <th scope="row" data-title="bookDescription">
+                    {{ book.description | raw }}
+                </th>
+                <th scope="row" data-title="operations">
+                    <a href="{{ url('librivox') }}/{{ book.bookId }}">View</a>
+                </th>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% js %}
+    var adminTable = new Craft.AdminTable({
+    tableSelector: '#books'
+    });
+{% endjs %}

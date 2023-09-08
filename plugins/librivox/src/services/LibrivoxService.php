@@ -4,6 +4,8 @@ namespace lexishamilton\craftlibrivox\services;
 
 use craft\base\Component;
 use craft\helpers\DateTimeHelper;
+use lexishamilton\craftlibrivox\models\BookModel;
+use lexishamilton\craftlibrivox\records\BookAuthorRecord;
 use lexishamilton\craftlibrivox\records\BookRecord;
 use lexishamilton\craftlibrivox\records\AuthorRecord;
 use GuzzleHttp;
@@ -44,14 +46,7 @@ class LibrivoxService extends Component {
         return $books;
     }
 
-//    public function getBooks() {
-//
-//
-//    }
-
-
     public function saveBook($book) {
-
         // Check if the Book has already been loaded
         $bookRecord = BookRecord::find()
             ->where(['bookId' => (string) $book['id']])
@@ -72,34 +67,81 @@ class LibrivoxService extends Component {
             //save book authors
             $authors = $book['authors'];
             foreach ($authors as $author) {
-                $this->saveAuthor($author);
+                $this->saveAuthor($book['id'], $author);
             }
-
-
-            //        $bookRecord->setAttribute('title', (string) $book["title"] ); //author ids
-
 
             //save into database
             $bookRecord->save();
         }
-
     }
 
-    public function saveAuthor($author) {
-        $authorRecord = new AuthorRecord();
+    public function saveAuthor($bookId, $author) {
+//        print_r($author['first_name'] . " " . $author['last_name']);
 
-        print_r($author['first_name'] . " " . $author['last_name']);
-//
-//        print_r($author);
+        // Check if the Author has already been loaded
+        $authorRecord = AuthorRecord::find()
+            ->where(['authorId' => (string) $author['id']])
+            ->one();
+
+        // If not in the db, save it
+        if (!$authorRecord) {
+            $authorRecord = new AuthorRecord();
+
+            //add fields and hydrate
+            $authorRecord->setAttribute('authorId', (int)$author['id']);
+            $authorRecord->setAttribute('firstName', (string)$author['first_name']);
+            $authorRecord->setAttribute('lastName', (string)$author['last_name']);
+            $authorRecord->setAttribute('dob', (string)$author['dob']);
+            $authorRecord->setAttribute('dod', (string)$author['dod']);
+
+            $authorRecord->save();
+        }
+
+
+        //Add relational mapping to db of book and author
+        $bookAuthorRecord = new BookAuthorRecord();
 
         //add fields and hydrate
-        $authorRecord->setAttribute('authorId', (int) $author['id'] );
-        $authorRecord->setAttribute('firstName', (string) $author['first_name'] );
-        $authorRecord->setAttribute('lastName', (string) $author['last_name'] );
-        $authorRecord->setAttribute('dob', (string) $author['dob'] );
-        $authorRecord->setAttribute('dod', (string) $author['dod'] );
+        $bookAuthorRecord->setAttribute('bookId', (int)$bookId);
+        $bookAuthorRecord->setAttribute('authorId', (int)$author['id']);
 
-//        $authorRecord->save();
+        $bookAuthorRecord->save();
+    }
+
+
+    public function getBooks(): array
+    {
+        $bookRecordTableName = BookRecord::tableName();
+
+        $bookRecords = BookRecord::find()
+            ->select("${bookRecordTableName}.*")
+            ->all();
+
+        $bookModels = [];
+
+        foreach($bookRecords as $bookRecord) {
+            $bookModel = new BookModel();
+            $bookModel->setAttributes($bookRecord->getAttributes(), false);
+
+            $bookModels[] = $bookModel;
+        }
+
+        return $bookModels;
+    }
+
+    public function getBookById($bookId): BookModel
+    {
+        $bookModel = new BookModel();
+
+        $bookRecord = BookRecord::find()
+            ->where(['bookId' => $bookId])
+            ->one();
+
+        if ($bookRecord) {
+            $bookModel->setAttributes($bookRecord->getAttributes(), false);
+        }
+
+        return $bookModel;
 
     }
 }

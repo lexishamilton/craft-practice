@@ -12,7 +12,7 @@
         }
     },
     "extra": {
-        "handle": "_librivox",
+        "handle": "librivox",
         "name": "Librivox",
         "developer": "Lexis Hamilton",
         "documentationUrl": ""

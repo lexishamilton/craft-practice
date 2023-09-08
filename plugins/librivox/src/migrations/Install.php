@@ -6,6 +6,7 @@ use Craft;
 use craft\db\Migration;
 use lexishamilton\craftlibrivox\records\BookRecord;
 use lexishamilton\craftlibrivox\records\AuthorRecord;
+use lexishamilton\craftlibrivox\records\BookAuthorRecord;
 
 class Install extends Migration
 {
@@ -29,8 +30,7 @@ class Install extends Migration
                 'description' => $this->longText(),
                 'language' => $this->string(),
                 'copyrightYear' => $this->integer(),
-                'totalTime' => $this->string(),
-                'authorId' => $this->integer()
+                'totalTime' => $this->string()
             ]);
         }
 
@@ -46,8 +46,21 @@ class Install extends Migration
                 'firstName' => $this->string(),
                 'lastName' => $this->string(),
                 'dob' => $this->string(),
-                'dod' => $this->string(),
+                'dod' => $this->string()
+            ]);
+        }
 
+        //Create Book Author Table to normalize the data for the most flexibility
+        $bookAuthorTable = BookAuthorRecord::tableName();
+
+        if(!$this->db->tableExists($bookAuthorTable)) {
+            $this->createTable($bookAuthorTable, [
+                'bookAuthorId' => $this->primaryKey(),
+                'uid' => $this->uid(),
+                'dateCreated' => $this->dateTime()->notNull(),
+                'dateUpdated' => $this->dateTime()->notNull(),
+                'bookId' => $this->integer(),
+                'authorId' => $this->integer()
             ]);
         }
 
@@ -65,6 +78,7 @@ class Install extends Migration
     {
         $this->dropTableIfExists(BookRecord::tableName());
         $this->dropTableIfExists(AuthorRecord::tableName());
+        $this->dropTableIfExists(BookAuthorRecord::tableName());
 
         return true;
     }
