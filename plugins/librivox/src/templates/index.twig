@@ -23,6 +23,7 @@
                 </th>
                 <th scope="row" data-title="operations">
                     <a href="{{ url('librivox') }}/{{ book.bookId }}">View</a>
+                    <a href="{{ url('librivox') }}/delete/{{ book.bookId }}">Delete</a>
                 </th>
             </tr>
         {% endfor %}

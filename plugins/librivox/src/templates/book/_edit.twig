@@ -1,12 +1,80 @@
 {% extends '_layouts/cp.twig' %}
-{#{% import '_includes/forms.twig' as forms %}#}
+{% import '_includes/forms.twig' as forms %}
+{% do view.registerAssetBundle('craft\\redactor\\assets\\redactor\\RedactorAsset') %}
 
-{% set title = 'Edit Book'|t('Librivox') %}
-{#{% set fullPageForm = true %}#}
+{% set title = 'Edit Book'|t('librivox') %}
+{% set fullPageForm = true %}
 
 {% block content %}
+    {% import '_includes/forms' as forms %}
 
+    <section id="bookInformation">
+        {{ forms.textField({
+            label: "Title"|t('librivox'),
+            instructions: "The title of the eBook"|t('librivox'),
+            name: 'title',
+            value: book.title,
+            required: true
+        }) }}
 
-    <p>You're on the edit book page!</p>
+        <div class="field">
+            <div class="heading">
+                <label for="modifiedContent">Book Description</label>
+            </div>
+            <div class="instructions">
+                <p>A description of the eBook</p>
+            </div>
+            {{ forms.textArea({
+                label: "Description"|t('librivox'),
+                instructions: "A description of the eBook"|t('librivox'),
+                name: 'description',
+                value: book.description,
+                id: 'textContentRedactor',
+                rows: 20,
+                required: false
+            }) }}
+        </div>
+
+        {{ forms.textField({
+            label: "Langauge"|t('librivox'),
+            instructions: "The language the eBook is read in"|t('librivox'),
+            name: 'language',
+            value: book.language,
+            required: false
+        }) }}
+
+        {{ forms.textField({
+            label: "Copyright Year"|t('librivox'),
+            instructions: "The copyright year of the eBook"|t('librivox'),
+            name: 'copyrightYear',
+            value: book.copyrightYear,
+            required: false
+        }) }}
+
+        {{ forms.textField({
+            label: "Total Time"|t('librivox'),
+            instructions: "The total time of the eBook recordings"|t('librivox'),
+            name: 'totalTime',
+            value: book.totalTime,
+            required: false
+        }) }}
+
+    </section>
+
+    {{ forms.hidden({
+        name: 'bookId',
+        value: book.bookId
+    }) }}
 
 {% endblock %}
+
+{% js %}
+    $R('#textContentRedactor', {buttons:[
+        "html",
+        "bold",
+        "underline",
+        "italic",
+        "line",
+        "link"
+    ]});
+{% endjs %}

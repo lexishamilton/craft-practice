@@ -144,4 +144,42 @@ class LibrivoxService extends Component {
         return $bookModel;
 
     }
+
+    public function updateBook(array $post) {
+        $bookId = $post['bookId'];
+
+        $bookRecord = BookRecord::find()
+            ->where(['bookId' => (string) $bookId])
+            ->one();
+
+        if ($bookRecord) {
+            $bookRecord->setAttribute('title', (string) $post['title']);
+            $bookRecord->setAttribute('description', (string) $post['description']);
+            $bookRecord->setAttribute('language', (string) $post['language']);
+            $bookRecord->setAttribute('copyrightYear', (int) $post['copyrightYear']);
+            $bookRecord->setAttribute('totalTime', (string) $post['totalTime']);
+
+            $bookRecord->save();
+        } else {
+            throw new \Exception('Book record could not be found');
+        }
+
+    }
+
+    public function deleteBook($bookId): bool
+    {
+        $bookRecord = BookRecord::find()
+            ->where(['bookId' => (string) $bookId])
+            ->one();
+
+        if ($bookRecord) {
+            $bookRecord->delete();
+
+            //@TODO: delete bookauthor record in book record table?
+            //@TODO: delete author record in author table if the author has no other books?
+            return true;
+        } else {
+            throw new \Exception('Book could not be found');
+        }
+    }
 }

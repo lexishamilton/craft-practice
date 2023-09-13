@@ -98,7 +98,8 @@ class Plugin extends BasePlugin
                 UrlManager::EVENT_REGISTER_CP_URL_RULES,
                 function(RegisterUrlRulesEvent $event) {
                     $event->rules = array_merge($event->rules, [
-                        'librivox/<bookId:\d+>' => 'librivox/book/edit'
+                        'librivox/<bookId:\d+>' => 'librivox/book/edit',
+                        'librivox/delete/<bookId:\d+>' => 'librivox/book/delete'
                     ]);
                 }
             );

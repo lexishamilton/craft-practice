@@ -3,6 +3,7 @@
     "prefer-stable": true,
     "require": {
         "craftcms/cms": "^4.4.0",
+        "craftcms/redactor": "3.0.4",
         "lexis-hamilton/craft-clear-jobs": "dev-main",
         "lexis-hamilton/craft-librivox": "dev-main",
         "vlucas/phpdotenv": "^5.4.0"
@@ -40,6 +41,11 @@
         {
             "type": "path",
             "url": "plugins/librivox"
+        },
+        {
+            "type": "composer",
+            "url": "https://composer.craftcms.com",
+            "canonical": false
         }
     ]
 }
