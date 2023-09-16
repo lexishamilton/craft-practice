@@ -1,0 +1,23 @@
+{% extends "_layouts/cp" %}
+
+{% set title = "Import Book"|t('librivox') %}
+{% do view.registerAssetBundle('craft\\web\\assets\\admintable\\AdminTableAsset') %}
+
+{% block content %}
+   <div id="content-items-table"></div>
+{% endblock %}
+
+{% js %}
+   new Craft.VueAdminTable({
+      container: '#content-items-table',
+      tableDataEndpoint: '/admin/librivox/search',
+      emptyMessage: 'No data available',
+      search: true,
+      searchPlaceholder: 'Search for book titles',
+      columns: [
+         {name: 'title', title: Craft.t('librivox', 'Book Title'), sortField: 'title'},
+         {name: 'language', title: Craft.t('librivox', 'Language'), sortField: 'language'},
+         {name: 'authors', title: Craft.t('librivox', 'Authors'), sortField: 'authors'}
+      ]
+   });
+{% endjs %}

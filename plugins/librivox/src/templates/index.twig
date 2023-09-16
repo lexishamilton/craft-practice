@@ -5,7 +5,12 @@
 {% set selectedSubnavItem = 'index' %}
 {% do view.registerAssetBundle('craft\\web\\assets\\admintable\\AdminTableAsset') %}
 
+{% block actionButton %}
+    <a class="btn submit add icon" href="{{ url('librivox/import/book') }}">{{ 'Import Librivox Book'|t('librivox') }}</a>
+{% endblock %}
+
 {% block content %}
+
     <table id="book-table" class="data fullwidth collapsible">
         <thead>
         <th scope="col">{{ "Book Title"|t('Librivox') }}</th>

@@ -99,7 +99,8 @@ class Plugin extends BasePlugin
                 function(RegisterUrlRulesEvent $event) {
                     $event->rules = array_merge($event->rules, [
                         'librivox/<bookId:\d+>' => 'librivox/book/edit',
-                        'librivox/delete/<bookId:\d+>' => 'librivox/book/delete'
+                        'librivox/delete/<bookId:\d+>' => 'librivox/book/delete',
+                        'librivox/search' => 'librivox/search/search'
                     ]);
                 }
             );
