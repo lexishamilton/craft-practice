@@ -12,11 +12,14 @@ class SearchController extends Controller
     public function actionSearch(): Response
     {
         $sort = Craft::$app->request->getQueryParam('sort');
-        $page = Craft::$app->request->getQueryParam('page');
+        $page = Craft::$app->request->getQueryParam('page'); //current page
         $pageSize = Craft::$app->request->getQueryParam('per_page');
         $search = Craft::$app->request->getQueryParam('search');
 
-        $searchResults= [];
+        //need to send offset & page
+        $searchResults= Plugin::getInstance()->librivox->searchBooksByTitle($search);
+
+        //get length of array and divide into pages
 
         return $this->asJson([
             'pagination' => [

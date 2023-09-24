@@ -12,11 +12,11 @@ use GuzzleHttp;
 
 class LibrivoxService extends Component {
 
-    protected function _apiRequest(): array {
+    protected function _apiRequest($requestUri): array {
 
         // GET request
         $client = new GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://librivox.org/api/feed/audiobooks/?format=json');
+        $response = $client->request('GET', $requestUri);
         $responseBody = json_decode($response->getBody(), true);
 
         if ($responseBody) {
@@ -29,7 +29,7 @@ class LibrivoxService extends Component {
     }
 
     public function loadBooks() {
-        $responseData = $this->_apiRequest();
+        $responseData = $this->_apiRequest('https://librivox.org/api/feed/audiobooks/?format=json');
         $books = [];
 //        var_dump($responseData); exit;
 
@@ -181,5 +181,18 @@ class LibrivoxService extends Component {
         } else {
             throw new \Exception('Book could not be found');
         }
+    }
+
+    public function searchBooksByTitle($searchString): array {
+
+        // call API and get list of books with similar titles
+        $responseData = $this->_apiRequest("https://librivox.org/api/feed/audiobooks/?title=^{$searchString}&format=json");
+        $books = [];
+
+        if(sizeof($responseData) > 0 && array_key_exists('books', $responseData)) {
+            $books = $responseData['books'];
+        }
+
+        return $books;
     }
 }

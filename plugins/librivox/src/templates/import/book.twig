@@ -17,7 +17,18 @@
       columns: [
          {name: 'title', title: Craft.t('librivox', 'Book Title'), sortField: 'title'},
          {name: 'language', title: Craft.t('librivox', 'Language'), sortField: 'language'},
-         {name: 'authors', title: Craft.t('librivox', 'Authors'), sortField: 'authors'}
+         {
+            name: 'authors',
+            title: Craft.t('librivox', 'Authors'),
+            sortField: 'authors',
+            callback: function(value) {
+               if (value) {
+                  return value.map(author => author.first_name + " " + author.last_name).join(", ");
+               }
+
+               return '';
+            }
+         }
       ]
    });
 {% endjs %}
